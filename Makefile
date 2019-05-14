@@ -8,10 +8,10 @@ LIBFLAGS = `pkg-config --cflags --libs allegro` -lstdc++
 .c.o:
 	$(CPP) $(LIBFLAGS) $(CPPFLAGS) -c $<
 
-PoliceEscape: main.o
-	$(CPP) $(CPPFLAGS) main.o $(LIBFLAGS) $(OFLAG) PoliceEscape
+PunkEscape: main.o
+	$(CPP) $(CPPFLAGS) main.o $(LIBFLAGS) $(OFLAG) PunkEscape
 
 main.o: main.cpp
 
 clean:
-	rm -f *.o PoliceEscape
+	rm -f *.o PunkEscape
