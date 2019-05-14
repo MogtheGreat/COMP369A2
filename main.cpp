@@ -7,6 +7,7 @@
 #define BLACK makecol(0,0,0)
 
 BITMAP * charImg [8];
+BITMAP * policeImg [6];
 
 BITMAP * grabframe (BITMAP * source, int width, int height, int startx, int starty, int columns, int frame) {
 	BITMAP * temp = create_bitmap (width, height);
@@ -70,18 +71,25 @@ int main (void) {
 	int score = 0;
 
 	//Do Sprite Stuff here
-	BITMAP * temp = load_pcx ("Resources/Original/PlayerCharacterComp3691.pcx", NULL);
+	BITMAP * temp = load_pcx ("Resources/Original/PlayerCharacterComp369(48x48).pcx", NULL);
 	for (int n = 0; n < 8; n++) {
-		charImg [n] = grabframe (temp, 96,96,0,0,2,n);
+		charImg [n] = grabframe (temp, 48,48,0,0,2,n);
 	}
 	destroy_bitmap (temp);
+
+	temp = load_pcx ("Resources/Enemies/Police(24x50).pcx",NULL);
+	for (int n = 0; n < 6; n++) {
+		policeImg [n] = grabframe (temp, 24,50,0,0,4,n);
+	}
+	destroy_bitmap (temp); 
 
 	// Display game page
 	blit (background, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
 	textprintf_ex (screen, symbol, 0,0, WHITE, -1, "Y");
 	textprintf_ex (screen, statFont, 60, 0, PUNKBLUE, -1, "Score: ");
 	textprintf_ex (screen, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
-	draw_sprite (screen, charImg[0], 0, SCREEN_H -96 - 25);
+	draw_sprite (screen, charImg[0], 0, SCREEN_H - 48 - 25);
+	draw_sprite (screen, policeImg[2], SCREEN_W - 30, SCREEN_H - 50 - 25);
 
 	while (!key[KEY_ESC]) {}
 
