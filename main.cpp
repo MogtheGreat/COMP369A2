@@ -62,6 +62,12 @@ int main (void) {
 		playerInput (people[0]); // Gets the player's input
 		updatePlayerSprite (people[0]); // Updates the player sprites
 
+		//Do Enemy Sprites
+		//Pick some random sprites from people[], turn onScreen to true. (enemy.cpp)
+		//Place onScreen Sprite at beginning (enemy.cpp)
+		//Update enemy Sprites (movement.cpp)
+		//Check for Score (enemy.cpp)
+		//Check for collision (enemy.cpp)
 
 		warpsprite(people[0]); // Keep the player's sprite on screen
 		draw_sprite (buffer, charImg[people[0]->curframe], people[0]-> x, people[0]-> y); // Draw sprite to buffer

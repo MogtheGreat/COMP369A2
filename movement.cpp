@@ -26,9 +26,45 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 			people[i]->framedelay = 1;
 			people[i]->animdir = 1;
 		}
-		//Enemy Sprite Init
+		//Enemy Sprite Init Right face
+		else if ((i %2 ) == 0){
+			people[i]-> x = 0;
+			people[i]-> y = ENEMYYPOS;
+			people[i]->width = enemWidth;
+			people[i]->height = enemHeight;
+			people[i]->xdelay = 1;		// Affect time
+			people[i]->ydelay = 0;
+			people[i]->xcount = 1;
+			people[i]->ycount = 0;
+			people[i]->xspeed = 5;		// Allows movement right(positive)/left(negative) screen
+			people[i]->yspeed = 0;		// Allows movement up(negative)/down(positive) screeen
+			people[i]->curframe = 0;
+			people[i]->maxframe = 6;
+			people[i]->framecount = 0;
+			people[i]->framedelay = 1;
+			people[i]->animdir = 1;
+			people[i]-> onScreen = false;
+            people[i]-> placed = false;
+		}
+		//Enemy Sprite Init Left face
 		else {
-
+			people[i]-> x = SCREEN_W;
+			people[i]-> y = ENEMYYPOS;
+			people[i]->width = enemWidth;
+			people[i]->height = enemHeight;
+			people[i]->xdelay = 1;		// Affect time
+			people[i]->ydelay = 0;
+			people[i]->xcount = 1;
+			people[i]->ycount = 0;
+			people[i]->xspeed = -5;		// Allows movement right(positive)/left(negative) screen
+			people[i]->yspeed = 0;		// Allows movement up(negative)/down(positive) screeen
+			people[i]->curframe = 0;
+			people[i]->maxframe = 6;
+			people[i]->framecount = 0;
+			people[i]->framedelay = 1;
+			people[i]->animdir = 1;
+			people[i]-> onScreen = false;
+            people[i]-> placed = false;
 		}
 	}
 }
@@ -140,34 +176,53 @@ void warpsprite(SPRITE *spr) {
     }
 }
 
-void updateSprite(SPRITE *spr) {
-    //update x position
-    if (++spr->xcount > spr->xdelay)
-    {
-        spr->xcount = 0;
-        spr->x += spr->xspeed;
-    }
-
-    //update y position
-    if (++spr->ycount > spr->ydelay)
-    {
-        spr->ycount = 0;
-        spr->y += spr->yspeed;
-    }
-
-    //update frame based on animdir
-    if (++spr->framecount > spr->framedelay)
-    {
-        spr->framecount = 0;
-        if (spr->animdir == -1)
+void updateEnemySprite (SPRITE *spr) {
+	//update x position
+    if (spr -> onScreen == true) {
+        if (++spr->xcount > spr->xdelay)
         {
-            if (--spr->curframe < 0)
-                spr->curframe = spr->maxframe;
+            spr->xcount = 0;
+            spr->x += spr->xspeed;
         }
-        else if (spr->animdir == 1)
-        {
-            if (++spr->curframe > spr->maxframe)
-                spr->curframe = 0;
+
+        //update y position
+        if (++spr->ycount > spr->ydelay)
+        {   
+            spr->ycount = 0;
+            spr->y += spr->yspeed;
+        }
+
+        //update frame based on animdir
+        if (++spr->framecount > spr->framedelay) {
+    	   spr->framecount = 0;
+
+    	   //Moving to the right
+    	   if (spr-> xspeed > 0) {
+    		  if (spr->animdir == -1)
+        	   {
+            	   if (--spr->curframe < 0)
+                	   spr->curframe = 2;
+        	   }
+       		   else if (spr->animdir == 1)
+        	   {
+            	   if (++spr->curframe > spr->maxframe)
+            		  spr->curframe = 0;
+        	   }
+    	    }
+
+    	   //Moving to the left
+    	   else if (spr -> yspeed < 0){
+    		  if (spr->animdir == -1)
+        	   {
+            	   if (--spr->curframe < 0)
+                	   spr->curframe = 5;
+        	   }
+       		   else if (spr->animdir == 1)
+        	   {
+            	   if (++spr->curframe > spr->maxframe)
+            		  spr->curframe = 3;
+        	   }
+    	   }
         }
     }
 }

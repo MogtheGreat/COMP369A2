@@ -13,6 +13,8 @@ typedef struct SPRITE {
     int xcount,ycount;
     int curframe,maxframe,animdir;
     int framecount,framedelay;
+    bool onScreen;
+    bool placed;
 }SPRITE;
 
 #endif

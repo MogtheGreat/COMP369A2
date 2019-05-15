@@ -5,6 +5,7 @@
 #include "sprites.h"
 
 #define PLAYERYPOS SCREEN_H - 48 - 25
+#define ENEMYYPOS SCREEN_H - 50 - 25
 
 void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, int enemWidth, int enemHeight);
 
@@ -14,7 +15,7 @@ void updatePlayerSprite (SPRITE * player);
 
 void warpsprite(SPRITE *spr);
 
-void updateSprite(SPRITE *spr);
+void updateEnemySprite (SPRITE *spr);
 
 void resetSpeed (SPRITE * player);
 

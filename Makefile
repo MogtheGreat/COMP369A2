@@ -8,8 +8,8 @@ LIBFLAGS = `pkg-config --cflags --libs allegro` -lstdc++
 .c.o:
 	$(CPP) $(LIBFLAGS) $(CPPFLAGS) -c $<
 
-PunkEscape: main.o graphics.o movement.o auxi.o
-	$(CPP) $(CPPFLAGS) main.o graphics.o movement.o auxi.o $(LIBFLAGS) $(OFLAG) PunkEscape
+PunkEscape: main.o graphics.o movement.o auxi.o enemy.o
+	$(CPP) $(CPPFLAGS) main.o graphics.o movement.o auxi.o enemy.o $(LIBFLAGS) $(OFLAG) PunkEscape
 
 main.o: main.cpp
 
@@ -18,6 +18,8 @@ graphics.o: graphics.cpp graphics.h
 movement.o: movement.cpp movement.h
 
 auxi.o: auxi.cpp auxi.h
+
+enemy.o:  enemy.h enemy.cpp
 
 clean:
 	rm -f *.o PunkEscape
