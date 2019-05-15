@@ -10,7 +10,7 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 
 		// Player Sprite init
 		if (i == 0) {
-			people[i]-> x = 0;
+			people[i]-> x = SCREEN_W/2;
 			people[i]-> y = PLAYERYPOS;
 			people[i]->width = charWidth;
 			people[i]->height = charHeight;
@@ -32,14 +32,14 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 			people[i]-> y = ENEMYYPOS;
 			people[i]->width = enemWidth;
 			people[i]->height = enemHeight;
-			people[i]->xdelay = 1;		// Affect time
+			people[i]->xdelay = 3;		// Affect time
 			people[i]->ydelay = 0;
 			people[i]->xcount = 1;
 			people[i]->ycount = 0;
 			people[i]->xspeed = 5;		// Allows movement right(positive)/left(negative) screen
 			people[i]->yspeed = 0;		// Allows movement up(negative)/down(positive) screeen
 			people[i]->curframe = 0;
-			people[i]->maxframe = 6;
+			people[i]->maxframe = 5;
 			people[i]->framecount = 0;
 			people[i]->framedelay = 1;
 			people[i]->animdir = 1;
@@ -52,14 +52,14 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 			people[i]-> y = ENEMYYPOS;
 			people[i]->width = enemWidth;
 			people[i]->height = enemHeight;
-			people[i]->xdelay = 1;		// Affect time
+			people[i]->xdelay = 4;		// Affect time
 			people[i]->ydelay = 0;
 			people[i]->xcount = 1;
 			people[i]->ycount = 0;
 			people[i]->xspeed = -5;		// Allows movement right(positive)/left(negative) screen
 			people[i]->yspeed = 0;		// Allows movement up(negative)/down(positive) screeen
 			people[i]->curframe = 0;
-			people[i]->maxframe = 6;
+			people[i]->maxframe = 5;
 			people[i]->framecount = 0;
 			people[i]->framedelay = 1;
 			people[i]->animdir = 1;
@@ -197,7 +197,7 @@ void updateEnemySprite (SPRITE *spr) {
     	   spr->framecount = 0;
 
     	   //Moving to the right
-    	   if (spr-> xspeed > 0) {
+    	   if (spr-> xspeed < 0) {
     		  if (spr->animdir == -1)
         	   {
             	   if (--spr->curframe < 0)
@@ -205,21 +205,21 @@ void updateEnemySprite (SPRITE *spr) {
         	   }
        		   else if (spr->animdir == 1)
         	   {
-            	   if (++spr->curframe > spr->maxframe)
+            	   if (++spr->curframe > 2)
             		  spr->curframe = 0;
         	   }
     	    }
 
     	   //Moving to the left
-    	   else if (spr -> yspeed < 0){
+    	   else if (spr -> xspeed > 0){
     		  if (spr->animdir == -1)
         	   {
-            	   if (--spr->curframe < 0)
+            	   if (--spr->curframe < 3)
                 	   spr->curframe = 5;
         	   }
        		   else if (spr->animdir == 1)
         	   {
-            	   if (++spr->curframe > spr->maxframe)
+            	   if (++spr->curframe > 5)
             		  spr->curframe = 3;
         	   }
     	   }

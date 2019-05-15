@@ -14,6 +14,7 @@ int initLib () {
 	}
 
 	set_color_depth(16);
+	srand (time(NULL));
 
 
 	return 0;

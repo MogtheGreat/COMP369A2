@@ -2,6 +2,7 @@
 #include "auxi.h"
 #include "graphics.h"
 #include "movement.h"
+#include "enemy.h"
 
 //timer variables
 volatile int counter;
@@ -62,15 +63,21 @@ int main (void) {
 		playerInput (people[0]); // Gets the player's input
 		updatePlayerSprite (people[0]); // Updates the player sprites
 
-		//Do Enemy Sprites
 		//Pick some random sprites from people[], turn onScreen to true. (enemy.cpp)
+		genEnemy (people);
 		//Place onScreen Sprite at beginning (enemy.cpp)
+		placeEnemy (people);
+
 		//Update enemy Sprites (movement.cpp)
+		for (int i = 1; i < MAXSPRITES; i++) {
+			updateEnemySprite (people[i]);
+			draw_sprite (buffer, policeImg[people[i]->curframe], people[i]-> x, people[i]-> y);
+		}
 		//Check for Score (enemy.cpp)
 		//Check for collision (enemy.cpp)
 
 		warpsprite(people[0]); // Keep the player's sprite on screen
-		draw_sprite (buffer, charImg[people[0]->curframe], people[0]-> x, people[0]-> y); // Draw sprite to buffer
+		draw_sprite (buffer, charImg[people[0]->curframe], people[0]-> x, people[0]-> y); // Draw player's sprite to buffer
 
 		//update ticks
         ticks++;
