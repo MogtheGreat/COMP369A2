@@ -17,4 +17,6 @@ void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]);
 
 void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score);
 
+void displayGameOver ();
+
 #endif

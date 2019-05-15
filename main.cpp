@@ -15,6 +15,7 @@ void timer1(void)
     counter++;
     framerate = ticks;
     ticks=0;
+    rest (100);
 }
 END_OF_FUNCTION(timer1)
 
@@ -23,6 +24,7 @@ int main (void) {
 	BITMAP * policeImg [6];
 	BITMAP *buffer;
 	SPRITE * people[MAXSPRITES];
+	int caught = 0;
 
 	if (initLib ())
 		return 1;
@@ -57,25 +59,22 @@ int main (void) {
     LOCK_FUNCTION(timer1);
     install_int(timer1, 1000);
 
-	while (!key[KEY_ESC]) {
+	while ((!key[KEY_ESC])) {
+		if (caught == 0) {
 		displayBackground (buffer, background, symbol, statFont, score);
 		
 		playerInput (people[0]); // Gets the player's input
 		updatePlayerSprite (people[0]); // Updates the player sprites
 
-		//Pick some random sprites from people[], turn onScreen to true. (enemy.cpp)
-		genEnemy (people);
-		//Place onScreen Sprite at beginning (enemy.cpp)
-		placeEnemy (people);
+		genEnemy (people); //Pick some random sprites from people[], turn onScreen to true. (enemy.cpp)
+		placeEnemy (people); //Place onScreen Sprite at beginning (enemy.cpp)
 
-		//Update enemy Sprites (movement.cpp)
 		for (int i = 1; i < MAXSPRITES; i++) {
-			updateEnemySprite (people[i]);
+			updateEnemySprite (people[i]); //Update enemy Sprites (movement.cpp)
+			caughtPunk (people, i, caught); //Check for collision (enemy.cpp)
 			draw_sprite (buffer, policeImg[people[i]->curframe], people[i]-> x, people[i]-> y);
 		}
-		//Check for Score (enemy.cpp)
-		checkScore (people, score);
-		//Check for collision (enemy.cpp)
+		checkScore (people, score); //Check for Score (enemy.cpp)
 
 		warpsprite(people[0]); // Keep the player's sprite on screen
 		draw_sprite (buffer, charImg[people[0]->curframe], people[0]-> x, people[0]-> y); // Draw player's sprite to buffer
@@ -89,6 +88,17 @@ int main (void) {
 		release_screen ();
 
 		resetSpeed (people[0]); // stops the player's sprite.
+		}
+		else {
+			if (caught == 1){
+				displayGameOver ();
+				caught = 2;
+			}
+			if (key[KEY_Y]) {
+				caught = 0;
+				score = 0;
+			}
+		}
 	}
 
 	freeImageRes (charImg, policeImg, background, symbol, statFont);

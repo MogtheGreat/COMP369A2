@@ -48,9 +48,9 @@ BITMAP * grabframe (BITMAP * source, int width, int height, int startx, int star
 }
 
 void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]) {
-	BITMAP * temp = load_pcx ("Resources/Original/PlayerCharacterComp369(48x48).pcx", NULL);
+	BITMAP * temp = load_bitmap ("Resources/Original/PlayerCharacterComp369(23x43).bmp", NULL);
 	for (int n = 0; n < 8; n++) {
-		charImg [n] = grabframe (temp, 48,48,0,0,2,n);
+		charImg [n] = grabframe (temp, 23,43,0,0,2,n);
 	}
 	destroy_bitmap (temp);
 
@@ -66,4 +66,8 @@ void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FON
 	textprintf_ex (target, symbol, 0,0, WHITE, -1, "Y");
 	textprintf_ex (target, statFont, 60, 0, PUNKBLUE, -1, "Score: ");
 	textprintf_ex (target, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
+}
+
+void displayGameOver () {
+	rectfill(screen,0,0,SCREEN_W, SCREEN_H, BLACK);
 }
