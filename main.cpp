@@ -74,6 +74,7 @@ int main (void) {
 			draw_sprite (buffer, policeImg[people[i]->curframe], people[i]-> x, people[i]-> y);
 		}
 		//Check for Score (enemy.cpp)
+		checkScore (people, score);
 		//Check for collision (enemy.cpp)
 
 		warpsprite(people[0]); // Keep the player's sprite on screen

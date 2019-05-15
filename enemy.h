@@ -8,4 +8,6 @@ void genEnemy (SPRITE * spr[MAXSPRITES]);
 
 void placeEnemy (SPRITE * spr[MAXSPRITES]);
 
+void checkScore (SPRITE * spr[MAXSPRITES], int & score);
+
 #endif

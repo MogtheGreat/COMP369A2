@@ -15,11 +15,12 @@ void genEnemy (SPRITE * spr[MAXSPRITES]) {
 				hold-> onScreen = true;
 			}
 		}
+		batchPlaced = true;
 	}
 }
 
 void placeEnemy (SPRITE * spr[MAXSPRITES]) {
-	if (batchPlaced == false) {
+	if (batchPlaced == true) {
 		for (int i = 1; i < MAXSPRITES; i++) {
 			if ((spr [i]-> onScreen == true) && (spr[i]-> placed == false)) {
 				spr[i]-> placed = true;
@@ -33,3 +34,22 @@ void placeEnemy (SPRITE * spr[MAXSPRITES]) {
 	}
 }
 
+void checkScore (SPRITE * spr[MAXSPRITES], int & score) {
+	if (batchPlaced == true) {
+		for (int i = 1; i < MAXSPRITES; i++) {
+			if ((spr [i]-> onScreen == true) && (spr[i]-> placed == true)) {
+				if ((spr[i]-> xspeed > 0) && (spr[i]-> x >= SCREEN_W)) {
+					spr[i] ->onScreen = false;
+					spr[i]-> placed = false;
+					score += 100;
+				}
+				else if ((spr[i]-> xspeed < 0) && (spr[i]-> x <= 0)) {
+					spr[i] ->onScreen = false;
+					spr[i]-> placed = false;
+					score += 100;
+				}
+			}
+		}
+		batchPlaced = false;
+	}
+}
