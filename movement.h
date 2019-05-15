@@ -4,9 +4,19 @@
 #include <iostream>
 #include "sprites.h"
 
-void initSprites (SPRITE * people[MAXSPRITES]);
+#define PLAYERYPOS SCREEN_H - 48 - 25
 
-void playerInput ();
+void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, int enemWidth, int enemHeight);
+
+void playerInput (SPRITE * player);
+
+void updatePlayerSprite (SPRITE * player);
+
+void warpsprite(SPRITE *spr);
+
+void updateSprite(SPRITE *spr);
+
+void resetSpeed (SPRITE * player);
 
 void freeSprite (SPRITE * people[MAXSPRITES]);
 

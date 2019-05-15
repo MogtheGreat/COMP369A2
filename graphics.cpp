@@ -61,9 +61,9 @@ void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]) {
 	destroy_bitmap (temp); 
 }
 
-void displayBackground (BITMAP * background, FONT * symbol, FONT * statFont, int score) {
-	blit (background, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
-	textprintf_ex (screen, symbol, 0,0, WHITE, -1, "Y");
-	textprintf_ex (screen, statFont, 60, 0, PUNKBLUE, -1, "Score: ");
-	textprintf_ex (screen, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
+void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score) {
+	blit (background, target, 0,0,0,0, SCREEN_W, SCREEN_H);
+	textprintf_ex (target, symbol, 0,0, WHITE, -1, "Y");
+	textprintf_ex (target, statFont, 60, 0, PUNKBLUE, -1, "Score: ");
+	textprintf_ex (target, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
 }
