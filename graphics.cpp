@@ -1,5 +1,15 @@
+/*
+Title: graphics.cpp
+Description: Deals with some of the graphics related to the game
+Author: Michael G. Oranski
+ID: 2743708
+Date: May 15, 2019
+*/
 #include "graphics.h"
 
+/*
+	Displays the title of the game and how to play the game.
+*/
 void loadTitle() {
 	// Loads resources for title
 	BITMAP * start = load_bitmap ("Resources/Background/StartBackground.pcx", NULL);
@@ -36,6 +46,19 @@ void loadTitle() {
 	destroy_font (regFont);
 }
 
+/*
+	Grabs an animation frame from a sprite sheet.
+	Param:
+		source 	- A BITMAP that holds the sprite sheet
+		width	- The width of each frame
+		height 	- The height of each frame
+		startx 	- The starting x position of the requested frame
+		starty 	- The starting y position of the requested frame
+		columns - The number of columns in the sprite sheet
+		frame 	- Which frame in the sprite sheet
+	Return:
+		A BITMAP that contains the requested frame.
+*/
 BITMAP * grabframe (BITMAP * source, int width, int height, int startx, int starty, int columns, int frame) {
 	BITMAP * temp = create_bitmap (width, height);
 
@@ -47,6 +70,14 @@ BITMAP * grabframe (BITMAP * source, int width, int height, int startx, int star
 	return temp;
 }
 
+/*
+	Loads the frames for player and enemy from the sprite sheet.
+	Param:
+		charImg 	- An array of bitmap that holds player's sprite animation
+		policeImg 	- An array of bitmap that holds enemie's sprite animation
+	Return:
+		N/A
+*/
 void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]) {
 	BITMAP * temp = load_bitmap ("Resources/Original/PlayerCharacterComp369(23x43).bmp", NULL);
 	for (int n = 0; n < 8; n++) {
@@ -61,6 +92,18 @@ void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]) {
 	destroy_bitmap (temp); 
 }
 
+/*
+	Render the background and statisics onto the target bitmap.
+	Param:
+		target 		- The BITMAP being written to. Can be screen or buffer.
+		background 	- A bitmap that holds the image of the game's background
+		symbol		- A Font that represents the character's symbol
+		statFont 	- A Font that represents the letters used to write info on game screen
+		score 		- The player's current score
+		musicOn     - A boolean that determines whatever a music should be played
+	Return:
+		N/A
+*/
 void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score, bool musicOn) {
 	blit (background, target, 0,0,0,0, SCREEN_W, SCREEN_H);
 	textprintf_ex (target, symbol, 0,0, WHITE, -1, "Y");
@@ -68,12 +111,23 @@ void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FON
 	textprintf_ex (target, statFont, SCREEN_W-225, 0, PUNKBLUE, -1, "Help: Ctrl-H");
 	textprintf_ex (target, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
 
+	//Display staus of the music
 	if (musicOn)
 		textprintf_ex (target, statFont, SCREEN_W-225, 30, PUNKBLUE, -1, "Music: ON");
 	else
 		textprintf_ex (target, statFont, SCREEN_W-225, 30, PUNKBLUE, -1, "Music: OFF");
 }
 
+/*
+	Displays the gameover screen.
+	Param:
+		jail 	- A SAMPLE sound that holds the sound of a jail door closing
+		musicOn     - A boolean that determines whatever a music should be played
+		score 		- The player's current score
+		highScore 	- Player's all time high score
+	Return:
+		N/A
+*/
 void displayGameOver (SAMPLE * jail, bool musicOn, int score, int highScore) {
 	rectfill(screen,0,0,SCREEN_W, SCREEN_H, BLACK);
 	PALETTE palette;
@@ -90,14 +144,20 @@ void displayGameOver (SAMPLE * jail, bool musicOn, int score, int highScore) {
 	textprintf_ex (screen, infoFont, 100, SCREEN_H - 50, PUNKDARKBLUE, -1, "Press Y to start over. ESC to exit.");
 
 	if (musicOn)
-		play_sample(jail, 200, 128, 1000, FALSE); // Plays intro Effect
+		play_sample(jail, 200, 128, 1000, FALSE); // Plays jail Effect
 
 	//Release resources
 	destroy_font (gameOverFont);
 	destroy_font (infoFont);
 }
 
-
+/*
+	Displays the help module
+	Param:
+		info 	- A FONT that determines the type of font used
+	Retun:
+		N/A
+*/
 void displayHelp (FONT * info) {
 	rectfill(screen, 0, SCREEN_H/2 -50, SCREEN_W, SCREEN_H - 150, BLACK);
 	textprintf_ex (screen, info, 0, SCREEN_H/2 -50, PUNKBLUE, -1, "Press A or D to move left or right. Press W to jump.");

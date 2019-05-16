@@ -1,3 +1,11 @@
+/*
+Title: graphics.h
+Description: Deals with some of the graphics related to the game
+Author: Michael G. Oranski
+ID: 2743708
+Date: May 15, 2019
+*/
+
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 #include <allegro.h>

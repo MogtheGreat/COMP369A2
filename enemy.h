@@ -1,3 +1,10 @@
+/*
+Title: enemy.h
+Description: Deals with enemy behavior, generation and collision.
+Author: Michael G. Oranski
+ID: 2743708
+Date: May 15, 2019
+*/
 #ifndef ENEMY_H
 #define ENEMY_H
 #include <allegro.h>
