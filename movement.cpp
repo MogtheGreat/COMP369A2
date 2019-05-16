@@ -1,9 +1,30 @@
+/*
+Title: movement.cpp
+Description: Deals with sprite's movement and player's input.
+Author: Michael G. Oranski
+ID: 2743708
+Date: May 15, 2019
+*/
 #include "movement.h"
 
 using namespace std;
 
 bool jumped = false; //Player in the air or not. If in the air, can't jump again
 
+/*
+    Initializes the SPRITE array to allow for sprite movement.
+    Param:
+        people         - A SPRITE that holds the information about all the moveable sprites in the game.
+        MAXSPRITES  - An integer that determines the max number of sprites in the game.
+        charWidth   - the width of the player's character
+        charHeight  - the height of the player's character
+        enemWidth   - the width of the enemies character
+        enemHeight  - the height of the enemies character
+    Return:
+        N/A
+    Note:
+        charWidth or charHeight are different from enemWidth or enemHeight. 
+*/
 void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, int enemWidth, int enemHeight) {
 	for (int i = 0; i < MAXSPRITES; i++){
 		people[i] = new SPRITE;
@@ -69,25 +90,41 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 	}
 }
 
+/*
+    Collects player's input and either modifies the player's sprite, call help module or
+    turn music on/off based on input.
+    Param:
+        player  - A SPRITE that represents the player's sprite
+        jump    - A SAMPLE that represents a cartoonist jumping sound effect
+        pause   - A reference to a boolean variable that represents the game being paused or not
+        musicOn - A reference to a boolean variable that represents the game music being on or off
+    Return:
+        N/A
+*/
 void playerInput (SPRITE * player, SAMPLE * jump, bool & pause, bool & musicOn) {
 int count = 0;
+    //Player moves to the left
 	if (key[KEY_A]) {
 		player -> xspeed = -2;
 	}
+    //Player moves to the rights
 	else if (key[KEY_D]) {
 		player -> xspeed = 2;
 	}
+    //If player has not jump, jumps
 	if ((key[KEY_W]) && jumped == false) {
 
 		player -> yspeed = -12;
-		jumped = true;
+		jumped = true; // Used to disallow multi jumping
 
+        // Plays jump sound if music is on
         if ((musicOn) && (count == 0)) {
-            play_sample(jump, 200, 128, 1000, FALSE); // Plays intro Effect
-            count = 1;
+            play_sample(jump, 200, 128, 1000, FALSE); // Plays jump Effect
+            count = 1; //Used to prevent multiple calls. May not be needed
         }
 	}
 	
+    // if Player press ctrl-m, turn music on/off
 	if ((key[KEY_LCONTROL] || key[KEY_RCONTROL]) && (key[KEY_M])) {
         if (musicOn)
     		musicOn = false;
@@ -95,15 +132,24 @@ int count = 0;
             musicOn = true;
 	}
 
+    //If player press crtrl-h, pause game
 	if ((key[KEY_LCONTROL] || key[KEY_RCONTROL]) && (key[KEY_H])) {
         if (pause)
             pause = false;
         else
             pause = true;
-        readkey ();
+        readkey (); //Clears input buffer
 	}
 }
 
+/*
+    Updates the player's sprite position based on
+    sprite xspeed/yspeed. Changes the animation frame.
+    Param:
+        player  - A SPRITE that represents the player's sprite
+    Return:
+        N/A
+*/
 void updatePlayerSprite (SPRITE * player) {
 	//update x position
 	if (++player->xcount > player->xdelay)
@@ -134,7 +180,7 @@ void updatePlayerSprite (SPRITE * player) {
     		player-> yspeed += 1;
     	}
 
-    	// Player moving towards the right
+    	// Player moving towards the right, plays right moving animation
     	else if (player-> xspeed > 0) {
     		if (player-> animdir == -1) {
     			if (--player->curframe < 0)
@@ -146,7 +192,7 @@ void updatePlayerSprite (SPRITE * player) {
     		}
     	}
 
-    	//Player moving towars the left
+    	//Player moving towars the left, plays left moving animation
     	else if (player-> xspeed < 0) {
     		if (player-> animdir == -1) {
     			if (--player->curframe < 0)
@@ -165,6 +211,16 @@ void updatePlayerSprite (SPRITE * player) {
     }
 }
 
+/*
+    If the sprite goes off screen, warps the sprite to the other end.
+
+    Param:
+        spr        - A SPRITE that represents any sprite
+    Return:
+        N/A
+    Note: Function taken from main.c of the interruptTest program
+    Program from Game Programming All In One, Third Edition
+*/
 void warpsprite(SPRITE *spr) {
     //simple screen warping behavior
     //Allegro takes care of clipping
@@ -189,6 +245,14 @@ void warpsprite(SPRITE *spr) {
     }
 }
 
+/*
+     Updates the enemies's sprite position based on
+    sprite xspeed/yspeed. Changes the animation frame.
+    Param:
+        spr        - A SPRITE that represents any sprite
+    Return:
+        N/A
+*/
 void updateEnemySprite (SPRITE *spr) {
 	//update x position
     if (spr -> onScreen == true) {
@@ -209,7 +273,7 @@ void updateEnemySprite (SPRITE *spr) {
         if (++spr->framecount > spr->framedelay) {
     	   spr->framecount = 0;
 
-    	   //Moving to the right
+    	   //Moving to the right, change to right animation
     	   if (spr-> xspeed < 0) {
     		  if (spr->animdir == -1)
         	   {
@@ -223,7 +287,7 @@ void updateEnemySprite (SPRITE *spr) {
         	   }
     	    }
 
-    	   //Moving to the left
+    	   //Moving to the left, change to left animatino
     	   else if (spr -> xspeed > 0){
     		  if (spr->animdir == -1)
         	   {
@@ -240,6 +304,14 @@ void updateEnemySprite (SPRITE *spr) {
     }
 }
 
+/*
+    Resets the player's sprite xspeed to zero. Modifies
+    the yspeed based on position in air, if jumping.
+    Param:
+        player  - A SPRITE that represents the player's sprite
+    Return:
+        N/A
+*/
 void resetSpeed (SPRITE * player) {
 	player->xspeed = 0;
 
@@ -249,11 +321,22 @@ void resetSpeed (SPRITE * player) {
 		jumped = false;
 	}
 
-	// Begin descent
+	// Begin player's descent after peak
 	if ((jumped == true) && (player -> yspeed == 0) && (player-> y != PLAYERYPOS))
 		player -> yspeed = 2;
 }
 
+/*
+    Frees all SPRITE info.
+    Param:
+        people         - A SPRITE that holds the information about all the moveable sprites in the game.
+        MAXSPRITES  - An integer that determines the max number of sprites in the game.
+    Return:
+        N/A
+    Note:
+        Could be move into auxi.cpp or into a sprite.cpp since does not have anything
+        to do with movement.
+*/
 void freeSprite (SPRITE * people[MAXSPRITES]) {
 	for (int i = 0; i < MAXSPRITES; i++){
 		delete people[i];
