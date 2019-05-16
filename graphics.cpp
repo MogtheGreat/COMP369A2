@@ -61,13 +61,47 @@ void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]) {
 	destroy_bitmap (temp); 
 }
 
-void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score) {
+void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score, bool musicOn) {
 	blit (background, target, 0,0,0,0, SCREEN_W, SCREEN_H);
 	textprintf_ex (target, symbol, 0,0, WHITE, -1, "Y");
 	textprintf_ex (target, statFont, 60, 0, PUNKBLUE, -1, "Score: ");
+	textprintf_ex (target, statFont, SCREEN_W-225, 0, PUNKBLUE, -1, "Help: Ctrl-H");
 	textprintf_ex (target, statFont, 180, 0,  PUNKBLUE, -1, "%d", score);
+
+	if (musicOn)
+		textprintf_ex (target, statFont, SCREEN_W-225, 30, PUNKBLUE, -1, "Music: ON");
+	else
+		textprintf_ex (target, statFont, SCREEN_W-225, 30, PUNKBLUE, -1, "Music: OFF");
 }
 
-void displayGameOver () {
+void displayGameOver (SAMPLE * jail, bool musicOn, int score, int highScore) {
 	rectfill(screen,0,0,SCREEN_W, SCREEN_H, BLACK);
+	PALETTE palette;
+
+	//load resources
+	FONT * gameOverFont = load_font ("Resources/Font/a dripping marker(72).pcx", palette, NULL);
+	FONT * infoFont = load_font ("Resources/Font/Punkboy (28).pcx", palette, NULL);
+
+	// Print Game over info
+	textprintf_ex (screen, gameOverFont, 375, SCREEN_H/2-50, PUNKDARKBLUE, -1, "GAME OVER");
+	textprintf_ex (screen, infoFont, 325, SCREEN_H - 200, PUNKDARKBLUE, -1, "You have been caught!");
+	textprintf_ex (screen, infoFont, 100, SCREEN_H - 150, PUNKDARKBLUE, -1, "Score: %d", score);
+	textprintf_ex (screen, infoFont, 100, SCREEN_H - 100, PUNKDARKBLUE, -1, "High Score: %d", highScore);
+	textprintf_ex (screen, infoFont, 100, SCREEN_H - 50, PUNKDARKBLUE, -1, "Press Y to start over. ESC to exit.");
+
+	if (musicOn)
+		play_sample(jail, 200, 128, 1000, FALSE); // Plays intro Effect
+
+	//Release resources
+	destroy_font (gameOverFont);
+	destroy_font (infoFont);
+}
+
+
+void displayHelp (FONT * info) {
+	rectfill(screen, 0, SCREEN_H/2 -50, SCREEN_W, SCREEN_H - 150, BLACK);
+	textprintf_ex (screen, info, 0, SCREEN_H/2 -50, PUNKBLUE, -1, "Press A or D to move left or right. Press W to jump.");
+	textprintf_ex (screen, info, 0, SCREEN_H/2 -20, PUNKBLUE, -1, "Evade incoming police by jumping over. Score when police leaves scene.");
+	textprintf_ex (screen, info, 0, SCREEN_H/2 + 10, PUNKBLUE, -1, "Turn Music on/off by press Ctrl-M. Exit game by pressing ESC.");
+	textprintf_ex (screen, info, 0, SCREEN_H/2 + 40, PUNKBLUE, -1, "Press any key to resume play.");
 }

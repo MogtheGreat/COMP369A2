@@ -15,8 +15,10 @@ BITMAP * grabframe (BITMAP * source, int width, int height, int startx, int star
 
 void loadSprites (BITMAP * charImg [8], BITMAP * policeImg [6]);
 
-void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score);
+void displayBackground (BITMAP * target, BITMAP * background, FONT * symbol, FONT * statFont, int score, bool musicOn);
 
-void displayGameOver ();
+void displayGameOver (SAMPLE * jail, bool musicOn, int score, int highScore);
+
+void displayHelp (FONT * info);
 
 #endif

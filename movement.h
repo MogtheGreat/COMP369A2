@@ -9,7 +9,7 @@
 
 void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, int enemWidth, int enemHeight);
 
-void playerInput (SPRITE * player);
+void playerInput (SPRITE * player, SAMPLE * jump, bool & pause, bool & musicOn);
 
 void updatePlayerSprite (SPRITE * player);
 

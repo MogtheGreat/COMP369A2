@@ -98,6 +98,8 @@ int collided(SPRITE *first, SPRITE *second, int border)
 
 void caughtPunk (SPRITE * spr[MAXSPRITES], int current, int & caught) {
 	if (collided(spr[current], spr[0], 0)) {
-		caught = 1;
+		if (caught == 0) {
+			caught = 1;
+		}
 	}
 }

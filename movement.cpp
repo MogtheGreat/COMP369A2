@@ -69,8 +69,8 @@ void initSprites (SPRITE * people[MAXSPRITES], int charWidth, int charHeight, in
 	}
 }
 
-void playerInput (SPRITE * player) {
-
+void playerInput (SPRITE * player, SAMPLE * jump, bool & pause, bool & musicOn) {
+int count = 0;
 	if (key[KEY_A]) {
 		player -> xspeed = -2;
 	}
@@ -78,16 +78,29 @@ void playerInput (SPRITE * player) {
 		player -> xspeed = 2;
 	}
 	if ((key[KEY_W]) && jumped == false) {
+
 		player -> yspeed = -12;
 		jumped = true;
+
+        if ((musicOn) && (count == 0)) {
+            play_sample(jump, 200, 128, 1000, FALSE); // Plays intro Effect
+            count = 1;
+        }
 	}
 	
 	if ((key[KEY_LCONTROL] || key[KEY_RCONTROL]) && (key[KEY_M])) {
-		cout << "Pressed Ctrl-M" << endl;
+        if (musicOn)
+    		musicOn = false;
+        else
+            musicOn = true;
 	}
 
 	if ((key[KEY_LCONTROL] || key[KEY_RCONTROL]) && (key[KEY_H])) {
-		cout << "Pressed Ctrl-H" << endl;
+        if (pause)
+            pause = false;
+        else
+            pause = true;
+        readkey ();
 	}
 }
 
